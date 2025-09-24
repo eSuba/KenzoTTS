@@ -221,7 +221,7 @@ private extension VoiceSelectionViewV2 {
             }
         }
         .listStyle(.insetGrouped)
-        .listRowSeparator(.hidden)
+        .listSectionSeparator(.hidden)
     }
     
     func mySubtitle(for v: VoiceV2) -> String {
@@ -304,10 +304,15 @@ private struct MyVoiceRow: View {
         HStack(spacing: 12) {
             Circle().fill(LinearGradient(colors: [Color.purple.opacity(0.7), Color.pink.opacity(0.6)], startPoint: .topLeading, endPoint: .bottomTrailing)).frame(width: 56, height: 56)
             VStack(alignment: .leading, spacing: 4) {
-                Text(title).font(.headline)
-                Text(subtitle).font(.subheadline).foregroundColor(.secondary)
+                Text(title).font(.subheadline).bold()
+                Text(subtitle).font(.caption).bold().foregroundColor(.secondary)
             }
             Spacer()
+            if isSelected {
+                Image(systemName: "checkmark.circle.fill")
+                    .foregroundColor(.white)
+                    .padding(.trailing, 6)
+            }
             if let onRemove = onRemove {
                 Button(action: onRemove) {
                     Image(systemName: "minus.circle.fill")
@@ -315,7 +320,6 @@ private struct MyVoiceRow: View {
                 }
                 .buttonStyle(.plain)
             }
-            if isSelected { Image(systemName: "checkmark.circle.fill").foregroundColor(.white).padding(8).background(Color.gray.opacity(0.35)).clipShape(Circle()) }
         }
         .contentShape(Rectangle())
         .onTapGesture { onSelect() }
