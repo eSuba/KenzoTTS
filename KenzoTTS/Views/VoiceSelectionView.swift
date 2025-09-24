@@ -151,6 +151,7 @@ private extension VoiceSelectionViewV2 {
         playingId = nil
     }
     
+    
     func applySelection() {
         guard let id = pendingSelectedId else { return }
         stopPreview()
@@ -248,8 +249,8 @@ private extension VoiceSelectionViewV2 {
                             isSelected: pendingSelectedId == v.id,
                             isPlaying: playingId == v.id,
                             isAdded: eleven.isMyVoice(id: v.id),
-                            onAdd: { Task { await eleven.addToMyVoices(id: v.id) } },
-                            onRemove: { Task { await eleven.removeFromMyVoices(id: v.id) } },
+                            onAdd: { eleven.addToMyVoices(id: v.id) },
+                            onRemove: { eleven.removeFromMyVoices(id: v.id) },
                             onTap: { handleRowTap(v) }
                         )
                     }
@@ -316,6 +317,7 @@ private struct MyVoiceRow: View {
                         .background(Color.white.opacity(0.4))
                         .clipShape(Circle())
                 }
+                .buttonStyle(.plain)
             }
             if isSelected { Image(systemName: "checkmark.circle.fill").foregroundColor(.white).padding(8).background(Color.gray.opacity(0.35)).clipShape(Circle()) }
         }
@@ -337,8 +339,12 @@ private struct VoiceExploreRow: View {
         HStack(spacing: 12) {
             ZStack {
                 Circle().fill(LinearGradient(colors: [Color.green.opacity(0.7), Color.blue.opacity(0.6)], startPoint: .topLeading, endPoint: .bottomTrailing))
-                .frame(width: 56, height: 56)
-                // Removed play/pause icon as requested
+                    .frame(width: 56, height: 56)
+                if isPlaying {
+                    Image(systemName: "pause.fill")
+                        .foregroundColor(.white)
+                        .padding(10)
+                }
             }
             .onTapGesture { onTap() }
             VStack(alignment: .leading, spacing: 4) {
@@ -352,13 +358,16 @@ private struct VoiceExploreRow: View {
                     .padding(.trailing, 6)
             }
             Button(action: { isAdded ? onRemove() : onAdd() }) {
-                Image(systemName: isAdded ? "minus" : "plus")
-                    .font(.system(size: 14, weight: .bold))
-                    .foregroundColor(.black)
-                    .padding(8)
-                    .background(Color.white.opacity(isAdded ? 0.4 : 1))
-                    .clipShape(Circle())
+                ZStack {
+                    Image(systemName: "circle.fill")
+                        .foregroundColor(Color.white.opacity(isAdded ? 0.4 : 1))
+                        .font(.system(size: 26))
+                    Image(systemName: isAdded ? "minus" : "plus")
+                        .font(.system(size: 12, weight: .bold))
+                        .foregroundColor(.black)
+                }
             }
+            .buttonStyle(.plain)
         }
         .contentShape(Rectangle())
         .onTapGesture { onTap() }
