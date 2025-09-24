@@ -310,12 +310,8 @@ private struct MyVoiceRow: View {
             Spacer()
             if let onRemove = onRemove {
                 Button(action: onRemove) {
-                    Image(systemName: "minus")
-                        .font(.system(size: 14, weight: .bold))
-                        .foregroundColor(.black)
-                        .padding(8)
-                        .background(Color.white.opacity(0.4))
-                        .clipShape(Circle())
+                    Image(systemName: "minus.circle.fill")
+                        .foregroundColor(Color.white.opacity(0.4))
                 }
                 .buttonStyle(.plain)
             }
@@ -349,7 +345,7 @@ private struct VoiceExploreRow: View {
             .onTapGesture { onTap() }
             VStack(alignment: .leading, spacing: 4) {
                 Text(voice.name).font(.headline)
-                Text(subtitle).font(.subheadline).foregroundColor(.secondary)
+                Text(subtitle).font(.caption).bold().foregroundColor(.secondary)
             }
             Spacer()
             if isSelected {
@@ -358,14 +354,8 @@ private struct VoiceExploreRow: View {
                     .padding(.trailing, 6)
             }
             Button(action: { isAdded ? onRemove() : onAdd() }) {
-                ZStack {
-                    Image(systemName: "circle.fill")
-                        .foregroundColor(Color.white.opacity(isAdded ? 0.4 : 1))
-                        .font(.system(size: 26))
-                    Image(systemName: isAdded ? "minus" : "plus")
-                        .font(.system(size: 12, weight: .bold))
-                        .foregroundColor(.black)
-                }
+                Image(systemName: isAdded ? "minus.circle.fill" : "plus.circle.fill")
+                    .foregroundColor(Color.white.opacity(isAdded ? 0.4 : 1))
             }
             .buttonStyle(.plain)
         }
