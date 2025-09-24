@@ -344,7 +344,7 @@ private struct VoiceExploreRow: View {
             }
             .onTapGesture { onTap() }
             VStack(alignment: .leading, spacing: 4) {
-                Text(voice.name).font(.headline)
+                Text(voice.name).font(.subheadline).bold()
                 Text(subtitle).font(.caption).bold().foregroundColor(.secondary)
             }
             Spacer()
